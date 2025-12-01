@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dazel KidZ - Official Store</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        /* --- TEMA UTAMA --- */
+        :root {
+            --bg-body: #fbf7f2; 
+            --primary: #5d4037; 
+            --primary-light: #8d6e63;
+            --secondary: #a1887f; 
+            --white: #ffffff;
+            --shopee: #ee4d2d; --tokped: #42b549; --lazada: #10156e; --tiktok: #000000; --wa-green: #25D366;
+            --fb-blue: #1877F2; --ig-pink: #E1306C;
+            --love-red: #e53935;
+            --compare-blue: #1976D2;
+        }
+
+        /* PERBAIKAN 1: MENCEGAH SCROLL SAAT MODAL BUKA */
+        body.no-scroll { overflow: hidden; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(#d7ccc8 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0; padding: 0; color: var(--primary); scroll-behavior: smooth;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 480px; margin: 0 auto; min-height: 100vh;
+            background: rgba(255,255,255,0.98); box-shadow: 0 0 30px rgba(0,0,0,0.08);
+            padding-bottom: 90px; position: relative;
+        }
+
+        .page-view { display: none; animation: fadeIn 0.3s ease; }
+        .page-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ANNOUNCEMENT */
+        .announcement-bar {
+            background: var(--primary); color: white; padding: 8px 0;
+            font-size: 11px; font-weight: bold; letter-spacing: 0.5px;
+            position: relative; z-index: 102; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* HEADER */
+        .header {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px 20px 10px; background: #fff;
+        }
+        .logo-image { width: 130px; margin-bottom: 5px; object-fit: contain; }
+        .brand-name { font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 1px; margin: 0; color: var(--primary); text-transform: uppercase; }
+        .brand-desc { font-size: 12px; color: var(--secondary); margin-top: 5px; line-height: 1.4; max-width: 90%; font-weight: 600; margin-bottom: 10px; }
+
+        /* BANNER */
+        .banner-container { width: 100%; height: 180px; overflow: hidden; position: relative; margin-bottom: 0; background: #eee; }
+        .banner-wrapper { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
+        .banner-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .banner-slide::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); pointer-events: none; }
+        .banner-img { width: 100%; height: 100%; object-fit: cover; }
+        .banner-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 90%; z-index: 2; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+        .banner-title { font-family: 'Fredoka', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 5px; letter-spacing: 1px; animation: fadeInUp 0.8s ease; }
+        .banner-sub { font-family: 'Quicksand', sans-serif; font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; display: inline-block; backdrop-filter: blur(2px); border: 1px solid rgba(255,255,255,0.4); animation: fadeInUp 1s ease; }
+        .banner-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 3; }
+        .b-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; transition: 0.3s; }
+        .b-dot.active { background: #fff; width: 16px; border-radius: 10px; }
+
+        /* SEARCH & FILTER */
+        .sticky-nav-wrapper {
+            position: sticky; top: 0; z-index: 1100;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #f0f0f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding-top: 10px;
+        }
+        .search-container { padding: 0 20px 10px; }
+        .search-input {
+            width: 100%; padding: 12px 20px; border-radius: 50px; border: 1px solid #eee;
+            background: #f5f5f5; color: var(--primary); font-size: 14px; outline: none; font-family: 'Quicksand', sans-serif; font-weight: 600;
+            box-sizing: border-box; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.01);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%238d6e63' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 15px center; background-size: 18px;
+        }
+        .search-input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 4px 15px rgba(93, 64, 55, 0.1); }
+
+        .dropdown-scroll-container {
+            display: flex; gap: 8px; padding: 0 20px 12px; align-items: center;
+            overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+        }
+        .dropdown-scroll-container::-webkit-scrollbar { display: none; }
+        .dd-btn {
+            background: #fff; border: 1px solid #e0e0e0; border-radius: 50px;
+            padding: 8px 16px; font-family: 'Quicksand', sans-serif; font-size: 12px; font-weight: 700;
+            color: var(--primary); cursor: pointer; display: flex; align-items: center; gap: 6px;
+            transition: 0.2s; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .dd-btn:hover { border-color: var(--primary-light); }
+        .dd-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .dd-btn.active .dd-arrow { color: rgba(255,255,255,0.7); }
+        .dd-arrow { font-size: 10px; color: #aaa; transition: 0.2s; }
+
+        /* DROPDOWN MENU */
+        .dd-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s;
+            backdrop-filter: blur(2px);
+        }
+        .dd-overlay.show { opacity: 1; visibility: visible; }
+        .dd-menu {
+            display: block; position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: #fff; border-radius: 20px 20px 0 0; 
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.2); z-index: 2001;
+            padding-bottom: 20px; transform: translateY(110%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            max-height: 60vh; display: flex; flex-direction: column;
+        }
+        .dd-menu.show { transform: translateY(0); }
+        .dd-header-sheet {
+            padding: 15px 20px; border-bottom: 1px solid #eee;
+            font-size: 14px; font-weight: 800; color: var(--primary);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dd-close { font-size: 20px; cursor: pointer; padding: 5px; color: #999; }
+        .dd-content-sheet { overflow-y: auto; max-height: 50vh; padding: 0; }
+        .dd-item {
+            padding: 15px 20px; font-size: 13px; font-weight: 600; color: #555;
+            cursor: pointer; transition: 0.2s; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; align-items: center;
+        }
+        .dd-item:active { background: #f5f5f5; }
+        .dd-item.selected { background: #fff8e1; color: #e65100; font-weight: 800; }
+        .dd-item.selected::after { content: "✔"; font-size: 14px; }
+
+        .btn-refresh { min-width: 36px; height: 36px; flex-shrink: 0; background: #eee; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .btn-refresh svg { width: 14px; height: 14px; fill: #666; }
+        
+        .mp-filter-container { display: flex; justify-content: center; gap: 8px; padding: 0 20px 15px; flex-wrap: wrap; border-bottom: 1px solid #f9f9f9; }
+        .btn-mp-filter { background: transparent; border: 1px solid #eee; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; color: #999; transition: 0.2s; font-family: 'Quicksand', sans-serif; }
+        .btn-mp-filter.active { background: #333; color: white; border-color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-mp-filter.shopee-f.active { background: var(--shopee); border-color: var(--shopee); }
+        .btn-mp-filter.tokped-f.active { background: var(--tokped); border-color: var(--tokped); }
+        .btn-mp-filter.tiktok-f.active { background: var(--tiktok); border-color: var(--tiktok); }
+
+        /* PROMO & GRID */
+        .promo-section { padding: 15px 20px 0; }
+        .voucher-box { background: #fff3e0; border: 2px dashed #ffb74d; border-radius: 12px; margin-bottom: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .voucher-code { font-family: monospace; font-size: 14px; font-weight: 800; color: #e65100; letter-spacing: 1px; }
+        .flash-sale { background: linear-gradient(135deg, #ff8a80, #d32f2f); color: white; padding: 10px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; box-shadow: 0 5px 15px rgba(211, 47, 47, 0.2); }
+        .timer-box { background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 6px; font-family: monospace; font-size: 13px; letter-spacing: 1px; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px 20px; min-height: 300px; }
+        .product-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #f2f2f2; display: flex; flex-direction: column; position: relative; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-3px); }
+        .product-card.sold-out { opacity: 0.6; pointer-events: none; filter: grayscale(100%); }
+        .number-badge { position: absolute; top: 10px; left: 10px; background: rgba(93, 64, 55, 0.95); color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: bold; z-index: 5; box-shadow: 0 2px 5px rgba(0,0,0,0.2); text-transform: uppercase; letter-spacing: 0.5px; }
+        .multi-img-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; z-index: 5; display: flex; align-items: center; gap: 3px; }
+        .status-badge { position: absolute; top: 10px; right: 10px; padding: 3px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; color: white; z-index: 5; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .status-best { background: linear-gradient(135deg, #fdd835, #fbc02d); color: #5d4037; }
+        .status-new { background: linear-gradient(135deg, #66bb6a, #43a047); }
+        .status-promo { background: linear-gradient(135deg, #ef5350, #e53935); }
+        .status-habis { background: #333; color: #fff; }
+
+        .card-img-wrapper { width: 100%; padding-top: 100%; position: relative; background: #f0f0f0; overflow: hidden; }
+        .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; cursor: pointer; } 
+        
+        /* ICON OVERLAY */
+        .card-actions-overlay {
+            position: absolute; bottom: 10px; left: 10px; display: flex; gap: 8px; z-index: 6;
+        }
+        .btn-icon-card {
+            width: 32px; height: 32px; background: rgba(255,255,255,0.9); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: none;
+            cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: 0.2s;
+        }
+        .btn-icon-card svg { width: 16px; height: 16px; fill: transparent; stroke: #666; stroke-width: 2px; transition: 0.3s; }
+        .btn-icon-card:active { transform: scale(0.8); }
+        
+        .btn-wishlist.active svg { fill: var(--love-red); stroke: var(--love-red); animation: like-anim 0.4s ease-in-out; }
+        .btn-compare.active { background: var(--compare-blue); }
+        .btn-compare.active svg { stroke: white; fill: white; }
+
+        @keyframes like-anim { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        .card-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; color: var(--primary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px; }
+
+        .action-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+        .btn-size-chart { flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background-color: #fff3e0; border: 1px solid #ffe0b2; color: #e65100; border-radius: 8px; padding: 6px; cursor: pointer; font-size: 10px; font-weight: 700; transition: 0.2s; }
+        .btn-size-chart svg { width: 14px; height: 14px; fill: #e65100; }
+        .btn-share-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background-color: #e0f2f1; border: 1px solid #b2dfdb; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .btn-share-icon svg { width: 16px; height: 16px; fill: #00695c; }
+        
+        /* TOMBOL BELI */
+        .btn-buy {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none; padding: 10px; border-radius: 10px; color: white !important;
+            font-size: 11px; font-weight: 800; letter-spacing: 0.5px; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-buy svg { width: 16px; height: 16px; fill: white; }
+        .bg-shopee { background-color: var(--shopee); } .bg-tokped { background-color: var(--tokped); } .bg-lazada { background-color: var(--lazada); } .bg-tiktok { background-color: var(--tiktok); } .bg-default { background-color: #555; }
+        .btn-buy.disabled { background-color: #999 !important; cursor: not-allowed; }
+
+        .skeleton { background: #eee; background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); background-size: 200% 100%; animation: 1.5s shine linear infinite; border-radius: 12px; height: 280px; }
+        @keyframes shine { to { background-position-x: -200%; } }
+        
+        /* EXTRAS */
+        .review-section { margin: 40px 0 20px; padding: 0 20px; }
+        .review-title { font-size: 14px; font-weight: 800; color: var(--primary); margin: 0 0 15px; }
+        .review-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; }
+        .review-card { min-width: 200px; background: #fff; padding: 12px; border-radius: 16px; border: 1px solid #f0f0f0; }
+        .stars { color: #ffb74d; font-size: 10px; margin-bottom: 5px; letter-spacing: 2px; }
+        .review-text { font-size: 10px; color: #666; line-height: 1.4; font-style: italic; }
+        .reviewer-name { font-size: 9px; font-weight: bold; color: var(--primary); margin-top: 8px; text-align: right; }
+
+        .footer { text-align: center; font-size: 10px; color: #bbb; margin-top: 30px; padding-bottom: 20px; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .social-icon { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-decoration: none; font-size: 20px; transition: 0.3s; border: 1px solid #eee; }
+        .social-icon svg { width: 20px; height: 20px; }
+        .social-icon:hover { transform: translateY(-3px); }
+
+        .back-to-top { position: fixed; bottom: 90px; right: 20px; background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 900; box-shadow: 0 5px 15px rgba(93, 64, 55, 0.3); }
+        .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+        .live-notif { position: fixed; bottom: 90px; left: 20px; z-index: 990; background: rgba(255, 255, 255, 0.95); padding: 8px 12px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; transform: translateY(150px); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #eee; max-width: 220px; }
+        .live-notif.show { transform: translateY(0); }
+        .notif-img { width: 30px; height: 30px; border-radius: 50%; background: #eee; object-fit: cover; }
+        .notif-text { font-size: 9px; color: #333; line-height: 1.2; }
+        .notif-text b { color: var(--primary); }
+
+        .toast-msg { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 3000; left: 50%; transform: translateX(-50%); bottom: 80px; font-size: 12px; }
+        .toast-msg.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* MODAL & NAV */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2500; align-items: center; justify-content: center; }
+        .modal-content { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        
+        /* SWIPER MODAL STYLES */
+        .swiper-container { width: 100%; height: 80vh; }
+        .swiper-slide { display: flex; align-items: center; justify-content: center; }
+        .swiper-zoom-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 35px; cursor: pointer; color: #fff; z-index: 2600; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        
+        /* Navigasi Swiper (Dots & Arrow) */
+        .swiper-pagination-bullet { background: white; opacity: 0.5; }
+        .swiper-pagination-bullet-active { opacity: 1; background: white; }
+        .swiper-button-next, .swiper-button-prev { color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 10px 0 15px; border-top: 1px solid #f0f0f0; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 1500; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #999; cursor: pointer; transition: 0.2s; flex: 1; }
+        .nav-item svg { width: 22px; height: 22px; fill: #ccc; transition: 0.2s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active svg { fill: var(--primary); }
+        .nav-item:hover svg { fill: var(--primary-light); }
+
+        .section-title { font-size: 18px; font-weight: 800; padding: 20px; color: var(--primary); border-bottom: 1px solid #eee; }
+        .empty-state { text-align: center; padding: 50px 20px; color: #999; font-size: 12px; }
+        .about-container { text-align: center; padding: 40px 20px; }
+        .dev-credit { margin-top: 20px; font-size: 11px; color: #777; font-weight: 600; }
+
+        /* COMPARE FLOATING BAR */
+        .compare-float {
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(200%);
+            background: var(--primary); color: white; padding: 10px 15px; border-radius: 50px;
+            display: flex; align-items: center; gap: 15px; z-index: 1400;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); transition: 0.3s; min-width: 280px; justify-content: space-between;
+        }
+        .compare-float.show { transform: translateX(-50%) translateY(0); }
+        .compare-text { font-size: 12px; font-weight: bold; }
+        .btn-open-compare { background: white; color: var(--primary); border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer; }
+        .btn-reset-compare { background: rgba(255,255,255,0.2); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        /* COMPARE MODAL */
+        .compare-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; overflow-y: auto; }
+        .compare-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 10; }
+        .compare-title { font-size: 16px; font-weight: 800; color: var(--primary); }
+        .btn-close-compare { font-size: 24px; cursor: pointer; color: #999; }
+        .compare-grid { display: flex; overflow-x: auto; padding: 20px; gap: 15px; }
+        .compare-col { min-width: 140px; max-width: 140px; flex-shrink: 0; font-size: 11px; }
+        .c-img { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background: #eee; }
+        .c-row { padding: 8px 0; border-bottom: 1px solid #f9f9f9; color: #555; }
+        .c-label { font-weight: 800; color: var(--primary); margin-bottom: 2px; }
+        .c-val { line-height: 1.3; }
+
+        /* SHARE SHEET */
+        .share-sheet-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3100; display: none; align-items: flex-end; }
+        .share-sheet-overlay.show { display: flex; }
+        .share-sheet { width: 100%; background: white; border-radius: 20px 20px 0 0; padding: 20px; animation: slideUp 0.3s ease; }
+        .share-title { font-weight: 800; margin-bottom: 15px; color: var(--primary); }
+        .share-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .share-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 15px; background: #f9f9f9; border-radius: 12px; cursor: pointer; border: 1px solid #eee; }
+        .share-btn:hover { background: #f0f0f0; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        /* DESIGN DATA KOSONG - FIX POSISI TENGAH */
+        .empty-state-fancy {
+            grid-column: 1 / -1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            height: 60vh; /* Agar posisinya di tengah vertikal */
+            width: 100%;
+        }
+        .empty-illustration {
+            width: 120px; height: 120px; background: #f5f5f5; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+        }
+        .empty-illustration svg { width: 60px; height: 60px; fill: #ccc; }
+        .empty-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+        .empty-desc { font-size: 12px; color: #888; margin-bottom: 20px; max-width: 250px; }
+        .btn-empty-reset {
+            background: var(--primary); color: white; border: none; padding: 10px 25px;
+            border-radius: 50px; font-weight: bold; font-size: 12px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(93, 64, 55, 0.2); transition: 0.2s;
+        }
+        .btn-empty-reset:active { transform: scale(0.95); }
+
+        /* --- BLOG HEADER & STYLES --- */
+        .blog-header-section { padding: 20px 20px 10px; background: #fff; position: sticky; top:0; z-index:99; }
+        .blog-main-title { font-family: 'Fredoka', sans-serif; font-size: 28px; color: var(--primary); margin: 0 0 5px; }
+        .blog-sub { font-size: 12px; color: #999; margin: 0 0 20px; font-weight: 600; }
+        
+        .blog-search-box { position: relative; margin-bottom: 15px; }
+        .blog-search-input { 
+            width: 100%; background: #f5f5f5; border: none; padding: 12px 40px 12px 15px; 
+            border-radius: 12px; font-family: 'Quicksand'; font-weight:600; box-sizing: border-box; 
+            color: var(--primary); outline: none; transition: 0.3s;
+        }
+        .blog-search-input:focus { background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .blog-search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); fill: #aaa; }
+
+        .blog-tags { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .blog-tags::-webkit-scrollbar { display: none; }
+        .blog-tag { 
+            padding: 8px 16px; background: #f5f5f5; border-radius: 20px; font-size: 11px; 
+            font-weight: 700; color: #888; white-space: nowrap; cursor: pointer; transition: 0.2s; 
+        }
+        .blog-tag.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(93, 64, 55, 0.3); }
+
+        .blog-list { padding-top: 10px; padding-bottom: 10px; }
+        .blog-card { 
+            display: flex; gap: 12px; margin: 0 20px 15px; 
+            background: #fff; border-radius: 12px; padding: 10px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; 
+            border: 1px solid #f0f0f0; transition: transform 0.2s;
+        }
+        .blog-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .blog-thumb { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; background: #eee; flex-shrink: 0; }
+        .blog-info { display: flex; flex-direction: column; justify-content: center; flex: 1; }
+        
+        .blog-cat-badge { font-size: 9px; font-weight: 800; color: var(--shopee); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .blog-title-card { font-size: 13px; font-weight: 700; line-height: 1.4; margin-bottom: 5px; color: var(--primary); }
+        .blog-snippet { font-size: 10px; color: #888; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        
+        /* FIX: TANGGAL LEBIH KECIL DAN HALUS */
+        .blog-date { font-size: 9px; color: #aaa; margin-top: 5px; font-weight: 400; }
+
+        /* MODAL ARTIKEL */
+        .article-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 3500; overflow-y: auto; }
+        .article-header { padding: 15px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
+        .article-back { font-size: 24px; color: var(--primary); cursor: pointer; }
+        .article-content { padding: 20px; max-width: 600px; margin: 0 auto; }
+        .art-img { width: 100%; border-radius: 15px; margin-bottom: 20px; max-height: 300px; object-fit: cover; }
+        .art-title { font-family: 'Fredoka', sans-serif; font-size: 22px; color: var(--primary); margin-bottom: 10px; line-height: 1.3; }
+        .art-meta { font-size: 11px; color: #999; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .art-body { font-size: 14px; line-height: 1.8; color: #444; }
+        .art-body p { margin-bottom: 15px; }
+        .art-body h3 { color: var(--primary); margin-top: 25px; margin-bottom: 10px; font-size: 16px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">
+        <marquee scrollamount="4">
+            📢 PENGIRIMAN SETIAP HARI JAM 16.00 • GRATIS ONGKIR XTRA • BISA COD VIA SHOPEE & TIKTOK • KLAIM VOUCHER TOKO SEKARANG! 🎁
+        </marquee>
+    </div>
+
+    <div class="container">
+        
+        <div id="view-home" class="page-view active">
+            <div class="header">
+                <img src="https://i.ibb.co.com/JW6VfXp9/logo.png" alt="Dazel KidZ" class="logo-image">
+                <h1 class="brand-name">Dazel KidZ</h1>
+                <p class="brand-desc">Menyediakan pakaian dalam anak laki-laki berkualitas premium dan nyaman dipakai sehari-hari</p>
+            </div>
+
+            <div class="banner-container">
+                <div class="banner-wrapper" id="bannerWrapper">
+                    <div class="banner-slide">
+                        <img src="https://cdn.jsdelivr.net/gh/hrmnkosasi-netizen/DazelKidZ@main/IMG_20251127_234010.jpg" class="banner-img" fetchpriority="high">
+                        <div class="banner-overlay"><div class="banner-title">DAZEL KIDZ</div><div class="banner-sub">Pusat Pakaian Dalam Anak</div></div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="https://cdn.jsdelivr.net/gh/hrmnkosasi-netizen/DazelKidZ@main/IMG_20251127_233725.jpg" class="banner-img" loading="lazy">
+                         <div class="banner-overlay"><div class="banner-title">PROMO 12.12</div><div class="banner-sub">Diskon Hingga 50%</div></div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="https://cdn.jsdelivr.net/gh/hrmnkosasi-netizen/DazelKidZ@main/IMG_20251127_233643.jpg" class="banner-img" loading="lazy">
+                         <div class="banner-overlay"><div class="banner-title">BAHAN KATUN</div><div class="banner-sub">Nyaman & Anti Gerah</div></div>
+                    </div>
+                </div>
+                <div class="banner-dots" id="bannerDots"></div>
+            </div>
+
+            <div class="promo-section">
+                <div class="voucher-box" onclick="copyVoucher('DAZEL10')">
+                    <div><div class="voucher-text">KODE VOUCHER SHOPEE :</div><div class="voucher-code">DAZEL10</div></div>
+                    <div class="copy-icon">SALIN DISINI</div>
+                </div>
+                <div class="flash-sale">
+                    <span>⚡ PROMO BERAKHIR:</span>
+                    <span class="timer-box" id="timer">00:00:00</span>
+                </div>
+            </div>
+
+            <div class="section-title" style="border:none; text-align:center; font-size:14px;">✨ REKOMENDASI PRODUK ✨</div>
+            <div id="homeProductGrid" class="product-grid"><div class="skeleton"></div><div class="skeleton"></div></div>
+            
+            <div class="review-section">
+                <h3 class="review-title">Apa Kata Moms Lain? ❤️</h3>
+                <div class="review-scroll">
+                    <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><div class="review-text">"Bahannya beneran adem, anakku gak keringetan lagi pas tidur."</div><div class="reviewer-name">- Mom Dinda</div></div>
+                    <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><div class="review-text">"Sesuai deskripsi, pengiriman cepat. Mantap 👍"</div><div class="reviewer-name">- Bunda Rina</div></div>
+                    <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><div class="review-text">"Anak saya udh 11th susah bgt pake sempak tapi setelah beli disini yang byk motif lucu2 akhirny pake sempak trus 🤭"</div><div class="reviewer-name">- Mama Santy</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-search" class="page-view">
+            <div class="sticky-nav-wrapper">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" oninput="searchProduct()" placeholder="Cari: Boxer, Singlet...">
+                </div>
+                
+                <div class="dropdown-scroll-container">
+                    <div class="custom-dd" id="dd-cat"><button class="dd-btn" onclick="toggleDropdown('menu-cat')"><span id="label-cat">Kategori</span><span class="dd-arrow">▼</span></button></div>
+                    <div class="custom-dd" id="dd-age"><button class="dd-btn" onclick="toggleDropdown('menu-age')"><span id="label-age">Umur</span><span class="dd-arrow">▼</span></button></div>
+                    <div class="custom-dd" id="dd-size"><button class="dd-btn" onclick="toggleDropdown('menu-size')"><span id="label-size">Size</span><span class="dd-arrow">▼</span></button></div>
+                    <div class="custom-dd" id="dd-weight"><button class="dd-btn" onclick="toggleDropdown('menu-weight')"><span id="label-weight">Berat</span><span class="dd-arrow">▼</span></button></div>
+                    <div class="custom-dd" id="dd-sort"><button class="dd-btn" onclick="toggleDropdown('menu-sort')"><span id="label-sort">Urutkan</span><span class="dd-arrow">▼</span></button></div>
+                    <button class="btn-refresh" onclick="resetAllFilters()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+                </div>
+                <div class="mp-filter-container">
+                    <button class="btn-mp-filter active" onclick="updateFilter('mp', 'all')" id="mp-all">Semua</button>
+                    <button class="btn-mp-filter shopee-f" onclick="updateFilter('mp', 'shopee')" id="mp-shopee">Shopee</button>
+                    <button class="btn-mp-filter tokped-f" onclick="updateFilter('mp', 'tokped')" id="mp-tokped">Tokopedia</button>
+                    <button class="btn-mp-filter tiktok-f" onclick="updateFilter('mp', 'tiktok')" id="mp-tiktok">TikTok</button>
+                </div>
+            </div>
+            <div id="searchProductGrid" class="product-grid" style="padding-top:10px"></div>
+        </div>
+
+        <div id="view-fav" class="page-view">
+            <div class="section-title">Favorit Saya ❤️</div>
+            <div id="favProductGrid" class="product-grid"></div>
+            <div id="favEmpty" class="empty-state" style="display:none">Belum ada produk yang disukai.</div>
+        </div>
+
+        <div id="view-blog" class="page-view">
+            <div class="blog-header-section">
+                <h1 class="blog-main-title">Artikel & Tips</h1>
+                <p class="blog-sub">Info seputar kesehatan & pakaian anak</p>
+                
+                <div class="blog-search-box">
+                    <input type="text" id="blogSearchInput" class="blog-search-input" placeholder="Cari artikel..." onkeyup="filterBlog()">
+                    <svg class="blog-search-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+
+                <div class="blog-tags">
+                    <div class="blog-tag active" onclick="filterBlogCat('all', this)">Semua</div>
+                    <div class="blog-tag" onclick="filterBlogCat('Kesehatan', this)">Kesehatan</div>
+                    <div class="blog-tag" onclick="filterBlogCat('Tips', this)">Tips Bunda</div>
+                    <div class="blog-tag" onclick="filterBlogCat('Edukasi', this)">Edukasi</div>
+                    <div class="blog-tag" onclick="filterBlogCat('Fashion', this)">Fashion</div>
+                </div>
+            </div>
+
+            <div class="blog-list" id="blogListContainer">
+                </div>
+        </div>
+
+        <div id="view-about" class="page-view">
+            <div class="about-container">
+                <img src="https://i.ibb.co.com/JW6VfXp9/logo.png" alt="Dazel KidZ" style="width:150px; margin-bottom:10px">
+                <h2 style="font-family:'Fredoka'; color:var(--primary)">DAZEL KIDZ</h2>
+                <p style="font-size:12px; color:#666; line-height:1.6">
+                    Kami menyediakan pakaian dalam anak berkualitas premium dengan bahan katun yang lembut, menyerap keringat, dan nyaman dipakai sehari-hari.
+                </p>
+                <div class="dev-credit">
+                    Aplikasi ini di develop oleh<br>
+                    <span style="color:var(--primary); font-size:13px">Herman Kosasi</span>
+                </div>
+                <div class="social-links" style="margin-top:30px">
+                    <a href="https://instagram.com/dazelkidz" target="_blank" class="social-icon"><svg viewBox="0 0 24 24" style="fill:#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="liveNotif" class="live-notif">
+        <img src="https://placehold.co/50x50/ffcc80/333?text=S" class="notif-img" id="notifImg">
+        <div class="notif-text" id="notifText"><b>Bunda Sarah</b> baru saja membeli<br>Paket Hemat 3pcs Boxer...</div>
+    </div>
+    <div id="toast" class="toast-msg">Kode berhasil disalin!</div>
+    <div class="back-to-top" onclick="scrollToTop()" id="backBtn">↑</div>
+
+    <div class="compare-float" id="compareBar">
+        <div class="compare-text">⚖️ <span id="compareCount">0</span> Produk Dipilih</div>
+        <div style="display:flex; gap:10px; align-items:center">
+            <button class="btn-open-compare" onclick="openCompareModal()">BANDINGKAN</button>
+            <button class="btn-reset-compare" onclick="resetCompare()">&#10005;</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('home')" id="nav-home">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Beranda
+        </div>
+        <div class="nav-item" onclick="switchPage('search')" id="nav-search">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg> Cari
+        </div>
+        <div class="nav-item" onclick="switchPage('fav')" id="nav-fav">
+            <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg> Favorit
+        </div>
+        <div class="nav-item" onclick="switchPage('blog')" id="nav-blog">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4 0h2v7h-2zm4 0h2v7h-2zM7 7h10v2H7z"/></svg> Blog
+        </div>
+        <div class="nav-item" onclick="switchPage('about')" id="nav-about">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Tentang
+        </div>
+    </div>
+
+    <div id="compareModal" class="compare-modal">
+        <div class="compare-header">
+            <div class="compare-title">Perbandingan Produk</div>
+            <div class="btn-close-compare" onclick="closeCompareModal()">&times;</div>
+        </div>
+        <div class="compare-grid" id="compareGrid">
+            </div>
+    </div>
+    
+    <div id="articleModal" class="article-modal">
+        <div class="article-header">
+            <span class="article-back" onclick="closeArticle()">&larr;</span>
+            <span style="font-weight:700; color:var(--primary);">Baca Artikel</span>
+            <span style="width:24px;"></span>
+        </div>
+        <div class="article-content" id="articleContent">
+        </div>
+    </div>
+
+    <div class="dd-overlay" id="ddOverlay" onclick="closeAllDropdowns(null)"></div>
+
+    <div class="dd-menu" id="menu-cat">
+        <div class="dd-header-sheet"><span>Pilih Kategori</span><span class="dd-close" onclick="closeAllDropdowns(null)">&times;</span></div>
+        <div class="dd-content-sheet">
+            <div class="dd-item selected" onclick="selectOption('cat', 'all', 'Kategori')">Semua</div>
+            <div class="dd-item" onclick="selectOption('cat', 'boxer', 'Boxer')">Boxer</div>
+            <div class="dd-item" onclick="selectOption('cat', 'brief', 'Celana Dalam')">Celana Dalam</div>
+            <div class="dd-item" onclick="selectOption('cat', 'kaos', 'Kaos')">Kaos/Singlet</div>
+        </div>
+    </div>
+
+    <div class="dd-menu" id="menu-age">
+        <div class="dd-header-sheet"><span>Pilih Umur</span><span class="dd-close" onclick="closeAllDropdowns(null)">&times;</span></div>
+        <div class="dd-content-sheet">
+            <div class="dd-item selected" onclick="selectOption('age', 'all', 'Umur')">Semua</div>
+            <div class="dd-item" onclick="selectOption('age', '1', '1 Tahun')">1 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '2', '2 Tahun')">2 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '3', '3 Tahun')">3 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '4', '4 Tahun')">4 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '5', '5 Tahun')">5 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '6', '6 Tahun')">6 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '7', '7 Tahun')">7 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '8', '8 Tahun')">8 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '10', '10 Tahun')">10 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '11', '11 Tahun')">11 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '12', '12 Tahun')">12 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '13', '13 Tahun')">13 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '14', '14 Tahun')">14 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '15', '15 Tahun')">15 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '16', '16 Tahun')">16 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '17', '17 Tahun')">17 Tahun</div>
+            <div class="dd-item" onclick="selectOption('age', '18', '18 Tahun')">18 Tahun</div>
+        </div>
+    </div>
+
+    <div class="dd-menu" id="menu-size">
+        <div class="dd-header-sheet"><span>Pilih Size</span><span class="dd-close" onclick="closeAllDropdowns(null)">&times;</span></div>
+        <div class="dd-content-sheet">
+            <div class="dd-item selected" onclick="selectOption('size', 'all', 'Size')">Semua</div>
+            <div class="dd-item" onclick="selectOption('size', 'S', 'S')">S</div>
+            <div class="dd-item" onclick="selectOption('size', 'M', 'M')">M</div>
+            <div class="dd-item" onclick="selectOption('size', 'L', 'L')">L</div>
+            <div class="dd-item" onclick="selectOption('size', 'XL', 'XL')">XL</div>
+            <div class="dd-item" onclick="selectOption('size', 'XXL', 'XXL')">XXL</div>
+            <div class="dd-item" onclick="selectOption('size', '3L', '3L')">3L</div>
+            <div class="dd-item" onclick="selectOption('size', '4L', '4L')">4L</div>
+            <div class="dd-item" onclick="selectOption('size', '5L', '5L')">5L</div>
+            <div class="dd-item" onclick="selectOption('size', '6L', '6L')">6L</div>
+        </div>
+    </div>
+
+    <div class="dd-menu" id="menu-weight">
+        <div class="dd-header-sheet"><span>Pilih Berat Badan</span><span class="dd-close" onclick="closeAllDropdowns(null)">&times;</span></div>
+        <div class="dd-content-sheet">
+            <div class="dd-item selected" onclick="selectOption('weight', 'all', 'Berat')">Semua</div>
+            <div class="dd-item" onclick="selectOption('weight', '5-10', '5-10 kg')">5-10 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '10-15', '10-15 kg')">10-15 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '15-20', '15-20 kg')">15-20 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '20-25', '20-25 kg')">20-25 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '25-30', '25-30 kg')">25-30 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '30-35', '30-35 kg')">30-35 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '35-40', '35-40 kg')">35-40 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '40-45', '40-45 kg')">40-45 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '45-50', '45-50 kg')">45-50 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '50-60', '50-60 kg')">50-60 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '60-65', '60-65 kg')">60-65 kg</div>
+            <div class="dd-item" onclick="selectOption('weight', '65-70', '65-70 kg')">65-70 kg</div>
+        </div>
+    </div>
+
+    <div class="dd-menu" id="menu-sort">
+        <div class="dd-header-sheet"><span>Urutkan Produk</span><span class="dd-close" onclick="closeAllDropdowns(null)">&times;</span></div>
+        <div class="dd-content-sheet">
+            <div class="dd-item selected" onclick="selectOption('sort', 'new', 'Urutkan')">Barang Baru</div>
+            <div class="dd-item" onclick="selectOption('sort', 'best', 'Terlaris')">Paling Laris</div>
+            <div class="dd-item" onclick="selectOption('sort', 'promo', 'Sedang Promo')">Sedang Promo</div>
+            <div class="dd-item" onclick="selectOption('sort', 'habis', 'Stok Habis')">Stok Habis</div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="swiper swiper-container mySwiper">
+                <div class="swiper-wrapper" id="swiperWrapper">
+                    </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="share-sheet-overlay" id="shareSheet" onclick="closeShareSheet()">
+        <div class="share-sheet" onclick="event.stopPropagation()">
+            <div class="share-title">Bagikan Produk Ini 📦</div>
+            <div class="share-options">
+                <div class="share-btn" onclick="doShareCopy()">
+                    <svg width="24" height="24" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    Salin Link
+                </div>
+                <div class="share-btn" onclick="doShareWA()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.789-1.48-1.762-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    WhatsApp
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <script>
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTUFRdR9S4c6F3mxGWSDIjom42dEbYb74yh1c1ThkOcHfoKQFz6fHggBOCzHcgziYILxbqyALn0Uca-/pub?gid=848961274&single=true&output=csv'; 
+
+        let activeFilters = { cat: 'all', mp: 'all', age: 'all', size: 'all', weight: 'all', sort: 'new' };
+        let allProducts = [];
+        let currentImages = [];
+        let lovedItems = JSON.parse(localStorage.getItem('dazelLoved')) || [];
+        let compareList = []; 
+        let currentBannerIndex = 0;
+        let bannerInterval;
+        let currentBlogCat = 'all'; // State untuk Filter Blog
+        
+        let swiperInstance = null;
+        
+        let currentShareName = '';
+        let currentShareLink = '';
+
+        // --- UPDATED: BLOG DATA (DYNAMIS) ---
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Bahaya Memilih Celana Dalam yang Terlalu Ketat untuk Anak",
+                date: "29 NOV 2025",
+                cat: "Kesehatan",
+                img: "https://images.unsplash.com/photo-1621452773781-0f992ee61919?w=600",
+                snippet: "Banyak Bunda yang tidak sadar bahwa celana dalam ketat bisa mengganggu kesehatan si kecil...",
+                content: `
+                    <p>Bunda, seringkali kita tergoda membelikan celana dalam yang 'pas' sekali di badan anak agar terlihat rapi. Tapi tahukah Bunda? Celana dalam yang terlalu ketat bisa berbahaya bagi kesehatan si kecil, lho!</p>
+                    <h3>1. Iritasi Kulit & Lecet</h3>
+                    <p>Gesekan karet yang terlalu kencang, apalagi saat anak aktif bergerak, bisa menyebabkan lecet di area pinggang dan selangkangan. Kulit anak jauh lebih tipis dibanding orang dewasa, sehingga mudah merah dan perih.</p>
+                    <h3>2. Pertumbuhan Jamur</h3>
+                    <p>Area intim membutuhkan sirkulasi udara yang baik. Celana yang ketat membuat area tersebut lembab, menjadi sarang favorit bagi jamur dan bakteri. Ini bisa menyebabkan gatal-gatal yang sangat mengganggu.</p>
+                    <h3>3. Mengganggu Sirkulasi Darah</h3>
+                    <p>Karet pinggang yang terlalu menekan bisa menghambat aliran darah lancar di area perut dan panggul. Pilihlah ukuran yang menyisakan ruang gerak sekitar 1-2 jari.</p>
+                    <p><b>Solusinya?</b> Selalu cek size chart sebelum membeli. Di Dazel KidZ, kami menyediakan ukuran dari S hingga 6L agar Bunda bisa menemukan yang paling pas!</p>
+                `
+            },
+            {
+                id: 2,
+                title: "Boxer vs Celana Dalam Segitiga: Mana yang Lebih Baik?",
+                date: "28 NOV 2025",
+                cat: "Tips",
+                img: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600",
+                snippet: "Bingung pilih model boxer atau brief biasa? Yuk simak perbandingannya disini...",
+                content: `
+                    <p>Pertanyaan sejuta umat para Bunda: "Mending beli Boxer atau Brief (Segitiga) ya?". Jawabannya tergantung aktivitas dan kenyamanan anak, Bun.</p>
+                    <h3>Tipe Brief (Segitiga)</h3>
+                    <p><b>Kelebihan:</b> Memberikan support yang lebih baik, tidak mudah 'menggulung' saat dipakai dengan celana panjang jeans. Cocok untuk anak yang sangat aktif berolahraga.</p>
+                    <h3>Tipe Boxer (Segiempat)</h3>
+                    <p><b>Kelebihan:</b> Lebih rileks, sirkulasi udara lebih baik, dan meminimalisir gesekan di selangkangan. Banyak anak merasa lebih 'bebas' bergerak dengan boxer. Desain boxer di Dazel KidZ juga lucu-lucu, bisa dipakai sebagai celana santai di rumah.</p>
+                    <p><b>Kesimpulan:</b> Coba tanyakan si kecil, dia lebih nyaman yang mana? Atau sediakan keduanya: Brief untuk sekolah/olahraga, dan Boxer untuk tidur/santai.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "Kenapa Bahan Katun 100% Wajib untuk Pakaian Dalam Anak?",
+                date: "25 NOV 2025",
+                cat: "Tips",
+                img: "https://images.unsplash.com/photo-1513828583688-6338047726d8?w=600",
+                snippet: "Kulit anak jauh lebih sensitif dari orang dewasa. Ini alasan kenapa katun adalah pilihan mati...",
+                content: `
+                    <p>Jangan tergiur motif lucu tapi bahannya panas (polyester)! Untuk pakaian dalam, Katun adalah raja.</p>
+                    <p>Bahan katun memiliki serat alami yang mampu <b>menyerap keringat</b> dengan sangat baik. Anak laki-laki cenderung mudah berkeringat saat bermain. Jika keringat tidak terserap, bakteri penyebab bau akan muncul.</p>
+                    <p>Selain itu, katun bersifat <i>hypoallergenic</i>, artinya sangat jarang menimbulkan reaksi alergi. Dazel KidZ berkomitmen hanya menggunakan bahan katun premium yang lembut dan awet meski dicuci berkali-kali.</p>
+                `
+            },
+            {
+                id: 4,
+                title: "Tips Mencuci Celana Dalam Anak Agar Bebas Bakteri & Jamur",
+                date: "20 NOV 2025",
+                cat: "Tips",
+                img: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=600",
+                snippet: "Mencuci asal bersih saja tidak cukup lho, Bun! Simak cara mencuci yang benar agar awet...",
+                content: `
+                    <p>Sudah beli celana mahal-mahal, eh cepat rusak atau malah bikin gatal? Mungkin cara cucinya yang perlu diperbaiki, Bun.</p>
+                    <ul>
+                        <li><b>Pisahkan:</b> Jangan campur celana dalam dengan kaus kaki atau baju kotor yang sangat berdebu.</li>
+                        <li><b>Air Hangat:</b> Sesekali gunakan air hangat untuk membunuh kuman (pastikan cek label, jangan air mendidih ya!).</li>
+                        <li><b>Jemur di Matahari:</b> Sinar matahari adalah pembunuh bakteri alami terbaik. Pastikan kering sempurna sebelum diangkat.</li>
+                        <li><b>Setrika:</b> Untuk bahan katun, menyetrika bagian dalam (selangkangan) dengan panas sedang bisa membantu mematikan sisa bakteri.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 5,
+                title: "Anak Sekolah Wajib Pakai Singlet? Ini Alasannya!",
+                date: "18 NOV 2025",
+                cat: "Edukasi",
+                img: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=600",
+                snippet: "Sering dianggap sepele, ternyata singlet punya peran penting buat anak sekolah lho...",
+                content: `
+                    <p>Mungkin Bunda berpikir, "Ah, gerah kalau pakai rangkapan". Padahal, singlet atau kaos dalam sangat penting untuk anak sekolah.</p>
+                    <h3>1. Menyerap Keringat Saat Upacara</h3>
+                    <p>Indonesia panas, Bun. Saat upacara atau olahraga, keringat anak pasti bercucuran. Tanpa singlet, keringat akan langsung menempel ke seragam, bikin baju jadi basah dan bau apek seharian.</p>
+                    <h3>2. Melindungi Seragam</h3>
+                    <p>Keringat yang mengandung garam bisa bikin seragam putih cepat menguning di area ketiak/punggung. Singlet berfungsi sebagai tameng agar seragam tetap awet putih.</p>
+                    <h3>3. Agar Tidak Menerawang</h3>
+                    <p>Bahan seragam sekolah kadang agak tipis. Memakai singlet membuat anak (terutama yang sudah beranjak remaja) merasa lebih aman dan percaya diri karena tidak tembus pandang.</p>
+                `
+            },
+            {
+                id: 6,
+                title: "5 Kriteria Innerwear (Pakaian Dalam) Terbaik untuk Kesehatan Anak",
+                date: "15 NOV 2025",
+                cat: "Kesehatan",
+                img: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=600",
+                snippet: "Jangan asal murah! Pastikan 5 hal ini ada saat Bunda membeli celana dalam baru...",
+                content: `
+                    <p>Kesehatan organ vital anak investasi masa depan. Ini ceklis yang wajib Bunda perhatikan:</p>
+                    <ol>
+                        <li><b>Bahan Menyerap Keringat:</b> Wajib Katun, Bambu, atau Tencel. Hindari Nylon untuk harian.</li>
+                        <li><b>Ukuran Pas:</b> Tidak boleh meninggalkan bekas merah di pinggang.</li>
+                        <li><b>Karet Pinggang Lebar:</b> Karet yang lebar mendistribusikan tekanan lebih baik sehingga tidak sakit di perut.</li>
+                        <li><b>Tagless (Tanpa Label Jahit):</b> Cari yang labelnya diprint langsung di kain. Label jahit sering bikin gatal di punggung bawah.</li>
+                        <li><b>Warna Aman:</b> Pastikan pewarna kain tidak luntur yang bisa menyebabkan iritasi kimia pada kulit sensitif.</li>
+                    </ol>
+                `
+            },
+            {
+                id: 7,
+                title: "Kapan Harus Membuang Celana Dalam Lama?",
+                date: "10 NOV 2025",
+                cat: "Kesehatan",
+                img: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=600",
+                snippet: "Sayang dibuang? Awas, celana dalam lama bisa jadi sarang penyakit meski sudah dicuci...",
+                content: `
+                    <p>Celana dalam punya masa kedaluwarsa lho, Bun! Meski belum bolong, sebaiknya ganti jika:</p>
+                    <ul>
+                        <li><b>Sudah Melar Parah:</b> Tidak bisa menopang dengan baik lagi.</li>
+                        <li><b>Noda Tidak Hilang:</b> Bercak kuning atau noda jamur yang tidak hilang setelah dicuci berkali-kali adalah tanda bakteri sudah bersarang di serat kain.</li>
+                        <li><b>Kain Menipis/Kasar:</b> Serat kain yang rusak bisa menggesek kulit dan menyebabkan iritasi.</li>
+                        <li><b>Usia > 6-12 Bulan:</b> Dokter menyarankan mengganti stok celana dalam setidaknya setahun sekali untuk higienitas maksimal.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        function init() {
+            // FIX: PANGGIL BLOG DI AWAL AGAR LANGSUNG MUNCUL
+            filterBlog(); 
+
+            Papa.parse(sheetURL, {
+                download: true, header: true,
+                complete: function(results) { 
+                    allProducts = results.data;
+                    allProducts.forEach((p, index) => {
+                        p._id = index; 
+
+                        let text = (p['Marketplace'] + ' ' + p['Link Affiliasi']).toLowerCase();
+                        let tags = "";
+                        if(text.includes('shopee')) tags += "shopee ";
+                        if(text.includes('tokopedia') || text.includes('tokped')) tags += "tokped ";
+                        if(text.includes('tiktok')) tags += "tiktok ";
+                        if(text.includes('lazada')) tags += "lazada ";
+                        p._tags = tags;
+
+                        let rawCat = (p['Kategori'] || '').toLowerCase();
+                        p._rawCat = rawCat; 
+
+                        p._weightData = p['Berat'] ? p['Berat'].toString() : "";
+                        p._ageData = p['Umur'] ? p['Umur'].toString() : "";
+                        p._sizeData = p['Ukuran'] ? p['Ukuran'].toString() : "";
+                    });
+                    
+                    renderProducts(allProducts); 
+                    renderHomeProducts(allProducts); 
+                },
+                error: function(err) { document.getElementById('searchProductGrid').innerHTML = "Gagal memuat data."; }
+            });
+            initBannerDots();
+            startBannerAutoSlide();
+            closeAllDropdowns(null);
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+            
+            if(pageId === 'fav') renderFavorites();
+            
+            if(pageId === 'search') {
+                document.getElementById('searchInput').value = '';
+                resetAllFilters();
+            }
+            
+            // FIX: PASTIKAN BLOG DI-RENDER SAAT DIKLIK
+            if(pageId === 'blog') {
+                filterBlog();
+            }
+            
+            window.scrollTo(0,0);
+        }
+
+        function createCard(item, index) {
+            if(!item['Nama Produk']) return '';
+
+            let mpClass = 'bg-default'; let btnText = 'Cek Produk';
+            let tags = item._tags || "";
+            
+            if(tags.includes('shopee')) { mpClass = 'bg-shopee'; btnText = 'Beli di Shopee'; } 
+            else if(tags.includes('tokped')) { mpClass = 'bg-tokped'; btnText = 'Beli di Tokopedia'; } 
+            else if(tags.includes('tiktok')) { mpClass = 'bg-tiktok'; btnText = 'Beli di TikTok'; } 
+            else if(tags.includes('lazada')) { mpClass = 'bg-lazada'; btnText = 'Lihat di Lazada'; }
+
+            let etalaseNo = item['Etalase'] ? item['Etalase'] : '';
+            let badgeHtml = etalaseNo ? `<div class="number-badge">Etalase ${etalaseNo}</div>` : '';
+
+            let statusBadge = ''; let soldOutClass = '';
+            let status = item['Status'] ? item['Status'].toLowerCase().trim() : '';
+            if (status.includes('habis')) { statusBadge = `<div class="status-badge status-habis">STOK HABIS</div>`; soldOutClass = 'sold-out'; mpClass = 'disabled'; btnText = 'Stok Habis'; } 
+            else if (status.includes('best')) statusBadge = `<div class="status-badge status-best">BEST SELLER</div>`;
+            else if (status.includes('new')) statusBadge = `<div class="status-badge status-new">NEW ARRIVAL</div>`;
+            else if (status.includes('promo')) statusBadge = `<div class="status-badge status-promo">CUCI GUDANG</div>`;
+
+            let rawImages = item['Link Foto'] ? item['Link Foto'] : '';
+            let imageArray = rawImages.split(',').map(url => url.trim()).filter(url => url.length > 0);
+            let mainImage = imageArray.length > 0 ? imageArray[0] : 'https://placehold.co/300?text=No+Image';
+            let multiImgBadge = imageArray.length > 1 ? `<div class="multi-img-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg> ${imageArray.length}</div>` : '';
+
+            let sizeLink = item['Link Size Chart'] ? item['Link Size Chart'] : 'https://placehold.co/400x400?text=Size+Chart+Kosong';
+            let loveClass = lovedItems.includes(item['Nama Produk']) ? 'active' : '';
+            let compareClass = compareList.includes(item._id) ? 'active' : '';
+
+            let searchText = `${item['Nama Produk']} ${item['Kategori']} ETALASE ${item['Etalase']}`.toUpperCase();
+
+            // DATA-ID added for Sync Logic
+            return `
+            <div class="product-card ${soldOutClass}" 
+                 data-raw-cat="${item._rawCat}" 
+                 data-mp="${tags}" 
+                 data-status="${status}"
+                 data-weight="${item._weightData}"
+                 data-age="${item._ageData}"
+                 data-size="${item._sizeData}"
+                 data-search="${searchText}">
+                ${badgeHtml} ${statusBadge}
+                <div class="card-img-wrapper">
+                    ${multiImgBadge}
+                    <img src="${mainImage}" class="card-img" onclick="openProductModal(${item._id})" onerror="this.src='https://placehold.co/300?text=No+Image'">
+                    <div class="card-actions-overlay">
+                        <button class="btn-icon-card btn-wishlist ${loveClass}" data-name="${item['Nama Produk']}" onclick="toggleLove(this, '${item['Nama Produk']}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
+                        <button class="btn-icon-card btn-compare ${compareClass}" data-id="${item._id}" onclick="toggleCompare(this, ${item._id})">
+                            <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM14 13h-3v3H9v-3H6v-2h3V8h2v3h3v2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">${item['Nama Produk']}</div>
+                    <div class="action-row">
+                        <div class="btn-size-chart" onclick="openSizeModal('${sizeLink}')"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H3V8h2v4h2V8h2v4h2V8h2v4h2V8h2v8z"/></svg> Size Chart</div>
+                        <div class="btn-share-icon" onclick="openShareModal('${item['Nama Produk']}', '${item['Link Affiliasi']}')"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></div>
+                    </div>
+                    <a href="${item['Link Affiliasi']}" target="_blank" class="btn-buy ${mpClass}"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> ${btnText}</a>
+                </div>
+            </div>`;
+        }
+
+        function renderProducts(data) {
+            document.getElementById('searchProductGrid').innerHTML = data.map((item, idx) => createCard(item, idx)).join('');
+        }
+
+        function renderHomeProducts(data) {
+            const container = document.getElementById('homeProductGrid');
+            let shuffled = [...data].sort(() => 0.5 - Math.random()).slice(0, 6);
+            container.innerHTML = shuffled.map((item, idx) => createCard(item, idx)).join('');
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favProductGrid');
+            const emptyMsg = document.getElementById('favEmpty');
+            const favs = allProducts.filter(item => lovedItems.includes(item['Nama Produk']));
+            
+            if(favs.length === 0) {
+                container.innerHTML = '';
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                container.innerHTML = favs.map((item, idx) => createCard(item, idx)).join('');
+            }
+        }
+
+        function toggleLove(btn, productName) {
+            if(lovedItems.includes(productName)) {
+                lovedItems = lovedItems.filter(item => item !== productName);
+                showToast("Dihapus dari Favorit");
+            } else {
+                lovedItems.push(productName);
+                showToast("Disimpan ke Favorit ❤️");
+            }
+            localStorage.setItem('dazelLoved', JSON.stringify(lovedItems));
+            updateAllLoveIcons();
+            if(document.getElementById('view-fav').classList.contains('active')) renderFavorites();
+        }
+
+        function updateAllLoveIcons() {
+            document.querySelectorAll('.btn-wishlist').forEach(button => {
+                let name = button.getAttribute('data-name');
+                if(lovedItems.includes(name)) button.classList.add('active');
+                else button.classList.remove('active');
+            });
+        }
+
+        // --- SYNCED COMPARE LOGIC ---
+        function toggleCompare(btn, id) {
+            if(compareList.includes(id)) {
+                compareList = compareList.filter(i => i !== id);
+            } else {
+                if(compareList.length >= 3) { showToast("Maksimal 3 produk!"); return; }
+                compareList.push(id);
+            }
+            updateAllCompareButtons(); // Sync all buttons
+            updateCompareUI();
+        }
+
+        function updateAllCompareButtons() {
+            document.querySelectorAll('.btn-compare').forEach(button => {
+                let btnId = parseInt(button.getAttribute('data-id'));
+                if(compareList.includes(btnId)) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        function resetCompare() {
+            compareList = [];
+            updateAllCompareButtons();
+            updateCompareUI();
+        }
+
+        function updateCompareUI() {
+            const bar = document.getElementById('compareBar');
+            document.getElementById('compareCount').innerText = compareList.length;
+            if(compareList.length > 0) bar.classList.add('show'); else bar.classList.remove('show');
+        }
+
+        function openCompareModal() {
+            const modal = document.getElementById('compareModal');
+            const grid = document.getElementById('compareGrid');
+            let html = '';
+            
+            compareList.forEach(id => {
+                let item = allProducts.find(p => p._id === id);
+                if(!item) return;
+
+                let img = item['Link Foto'].split(',')[0];
+                let tags = item._tags || "";
+                
+                // Logika Tombol Marketplace
+                let mpClass = 'bg-default'; let btnText = 'Cek Produk';
+                if(tags.includes('shopee')) { mpClass = 'bg-shopee'; btnText = 'Beli di Shopee'; } 
+                else if(tags.includes('tokped')) { mpClass = 'bg-tokped'; btnText = 'Beli di Tokopedia'; } 
+                else if(tags.includes('tiktok')) { mpClass = 'bg-tiktok'; btnText = 'Beli di TikTok'; } 
+                else if(tags.includes('lazada')) { mpClass = 'bg-lazada'; btnText = 'Lihat di Lazada'; }
+
+                // --- LOGIKA BARU: SPESIFIKASI KHUSUS BERDASARKAN KATEGORI ---
+                let cat = (item['Kategori'] || "").toLowerCase();
+                let extraSpecs = '';
+
+                // Kategori 1: Boxer / Celana Dalam
+                if (cat.includes('boxer') || cat.includes('celana') || cat.includes('brief') || cat.includes('sempak') || cat.includes('cd')) {
+                    if(item['Lingkar Pinggang']) {
+                        extraSpecs += `<div class="c-row"><div class="c-label">Lingkar Pinggang</div><div class="c-val">${item['Lingkar Pinggang']}</div></div>`;
+                    }
+                }
+                
+                // Kategori 2: Kaos / Singlet
+                else if (cat.includes('kaos') || cat.includes('singlet') || cat.includes('baju') || cat.includes('kutang')) {
+                    if(item['Lebar Dada']) {
+                        extraSpecs += `<div class="c-row"><div class="c-label">Lebar Dada</div><div class="c-val">${item['Lebar Dada']}</div></div>`;
+                    }
+                    if(item['Lingkar Dada']) {
+                        extraSpecs += `<div class="c-row"><div class="c-label">Lingkar Dada</div><div class="c-val">${item['Lingkar Dada']}</div></div>`;
+                    }
+                    if(item['Panjang Baju']) {
+                        extraSpecs += `<div class="c-row"><div class="c-label">Panjang Baju</div><div class="c-val">${item['Panjang Baju']}</div></div>`;
+                    }
+                }
+                // -----------------------------------------------------------
+
+                // PERBAIKAN 3: TAMBAH onerror UNTUK FALLBACK GAMBAR
+                html += `
+                <div class="compare-col">
+                    <img src="${img}" class="c-img" onerror="this.src='https://placehold.co/300?text=No+Image'">
+                    <div class="c-row" style="min-height:40px; font-weight:700; color:#5d4037">${item['Nama Produk']}</div>
+                    <div class="c-row"><div class="c-label">Etalase</div><div class="c-val">${item['Etalase']}</div></div>
+                    <div class="c-row"><div class="c-label">Marketplace</div><div class="c-val">${item['Marketplace']}</div></div>
+                    <div class="c-row"><div class="c-label">Kategori</div><div class="c-val">${item['Kategori']}</div></div>
+                    <div class="c-row"><div class="c-label">Umur</div><div class="c-val">${item['Umur']}</div></div>
+                    <div class="c-row"><div class="c-label">Berat</div><div class="c-val">${item['Berat']}</div></div>
+                    
+                    ${extraSpecs} <div class="c-row"><div class="c-label">Size</div><div class="c-val">${item['Ukuran']}</div></div>
+                    <div class="c-row">
+                        <a href="${item['Link Affiliasi']}" target="_blank" class="btn-buy ${mpClass}" style="width:100%; box-sizing:border-box;">
+                            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> 
+                            ${btnText}
+                        </a>
+                    </div>
+                </div>`;
+            });
+            grid.innerHTML = html;
+            
+            // PERBAIKAN 1: TAMBAH no-scroll
+            document.body.classList.add('no-scroll');
+            modal.style.display = 'block';
+        }
+
+        function closeCompareModal() { 
+            // PERBAIKAN 1: HAPUS no-scroll
+            document.body.classList.remove('no-scroll');
+            document.getElementById('compareModal').style.display = 'none'; 
+        }
+
+        function openShareModal(name, link) {
+            currentShareName = name;
+            currentShareLink = link;
+            document.getElementById('shareSheet').classList.add('show');
+        }
+        function closeShareSheet() { document.getElementById('shareSheet').classList.remove('show'); }
+        function doShareCopy() {
+            let msg = `Lihat deh, bagus nih: ${currentShareName} \n\nCek disini: ${currentShareLink}`;
+            navigator.clipboard.writeText(msg); showToast("Link tersalin!");
+            closeShareSheet();
+        }
+        function doShareWA() {
+            let msg = `Lihat deh, bagus nih: ${currentShareName} - ${currentShareLink}`;
+            let url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+            closeShareSheet();
+        }
+
+        function showToast(msg) {
+            var x = document.getElementById("toast"); x.innerText = msg; x.classList.add("show");
+            setTimeout(() => x.classList.remove("show"), 3000);
+        }
+        function copyVoucher(text) { navigator.clipboard.writeText(text); showToast("Kode voucher disalin!"); }
+        function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
+
+        // --- BANNER FIX ---
+        function initBannerDots() {
+            const dotsContainer = document.getElementById('bannerDots');
+            document.querySelectorAll('.banner-slide').forEach((_, idx) => {
+                let dot = document.createElement('div');
+                dot.className = `b-dot ${idx === 0 ? 'active' : ''}`;
+                dotsContainer.appendChild(dot);
+            });
+        }
+        function startBannerAutoSlide() {
+            if(bannerInterval) clearInterval(bannerInterval);
+            bannerInterval = setInterval(() => {
+                const slides = document.querySelectorAll('.banner-slide');
+                if(slides.length > 0) {
+                    currentBannerIndex++;
+                    if(currentBannerIndex >= slides.length) currentBannerIndex = 0;
+                    updateBanner();
+                }
+            }, 3000); 
+        }
+        function updateBanner() {
+            const wrapper = document.getElementById('bannerWrapper');
+            const dots = document.querySelectorAll('.b-dot');
+            wrapper.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            if(dots[currentBannerIndex]) dots[currentBannerIndex].classList.add('active');
+        }
+
+        const overlay = document.getElementById('ddOverlay');
+        function toggleDropdown(menuId) {
+            closeAllDropdowns(menuId);
+            const menu = document.getElementById(menuId);
+            if (menu.classList.contains('show')) { menu.classList.remove('show'); overlay.classList.remove('show'); } 
+            else { menu.classList.add('show'); overlay.classList.add('show'); }
+        }
+        function closeAllDropdowns(exceptMenuId) {
+            document.querySelectorAll('.dd-menu').forEach(menu => { if (menu.id !== exceptMenuId) menu.classList.remove('show'); });
+            if (!exceptMenuId) overlay.classList.remove('show');
+        }
+        function selectOption(type, value, labelText) {
+            activeFilters[type] = value;
+            const btn = document.querySelector(`#dd-${type} .dd-btn`);
+            const labelSpan = document.getElementById(`label-${type}`);
+            if (value !== 'all' && value !== 'new') { labelSpan.innerText = labelText; btn.classList.add('active'); } 
+            else {
+                if(type === 'cat') labelSpan.innerText = 'Kategori';
+                if(type === 'age') labelSpan.innerText = 'Umur';
+                if(type === 'size') labelSpan.innerText = 'Size';
+                if(type === 'weight') labelSpan.innerText = 'Berat';
+                if(type === 'sort') labelSpan.innerText = 'Urutkan';
+                btn.classList.remove('active');
+            }
+            document.querySelectorAll(`#menu-${type} .dd-item`).forEach(i => i.classList.remove('selected'));
+            event.target.classList.add('selected');
+            closeAllDropdowns(null);
+            applyFilters();
+        }
+        function updateFilter(type, value) {
+            if(type === 'mp') {
+                activeFilters.mp = value;
+                document.querySelectorAll('.btn-mp-filter').forEach(b => b.classList.remove('active'));
+                let idMp = value === 'all' ? 'mp-all' : `mp-${value}`;
+                if(value === 'tokped') idMp = 'mp-tokped';
+                document.getElementById(idMp).classList.add('active');
+                applyFilters();
+            }
+        }
+        
+        function applyFilters() {
+            let items = document.querySelectorAll('#searchProductGrid .product-card');
+            items.forEach(item => {
+                let show = true;
+                if (activeFilters.cat !== 'all') {
+                    let pCat = (item.getAttribute('data-raw-cat') || "").toLowerCase();
+                    if (activeFilters.cat === 'boxer' && !pCat.includes('boxer')) show = false;
+                    if (activeFilters.cat === 'brief' && !(pCat.includes('celana') || pCat.includes('cd') || pCat.includes('brief') || pCat.includes('sempak'))) show = false;
+                    if (activeFilters.cat === 'kaos' && !(pCat.includes('kaos') || pCat.includes('singlet') || pCat.includes('baju') || pCat.includes('kutang'))) show = false;
+                }
+                if(activeFilters.mp !== 'all') { 
+                    let mpData = item.getAttribute('data-mp'); 
+                    if(!mpData.includes(activeFilters.mp)) show = false; 
+                }
+                if(activeFilters.weight !== 'all') { 
+                    let prodWeight = item.getAttribute('data-weight');
+                    if (!prodWeight || prodWeight.trim() === "") show = false; 
+                    else if(!checkRangeOverlap(activeFilters.weight, prodWeight)) show = false;
+                }
+                if(activeFilters.age !== 'all') { 
+                    let prodAge = item.getAttribute('data-age');
+                    if (!prodAge || prodAge.trim() === "") show = false; 
+                    else if(!checkRangeOverlap(activeFilters.age, prodAge) && !prodAge.includes(activeFilters.age)) show = false;
+                }
+                if(activeFilters.size !== 'all') { 
+                    let prodSize = item.getAttribute('data-size');
+                    if (!prodSize || prodSize.trim() === "") show = false; 
+                    else if(!prodSize.includes(activeFilters.size)) show = false;
+                }
+                let searchVal = document.getElementById('searchInput').value.toUpperCase();
+                let searchTarget = item.getAttribute('data-search'); 
+                if(searchVal && searchTarget.indexOf(searchVal) === -1) show = false;
+                
+                let status = item.getAttribute('data-status');
+                if(activeFilters.sort === 'best' && !status.includes('best')) show = false;
+                if(activeFilters.sort === 'promo' && !status.includes('promo')) show = false;
+                if(activeFilters.sort === 'habis' && !status.includes('habis')) show = false;
+                
+                item.style.display = show ? 'flex' : 'none';
+            });
+
+            // EMPTY STATE LOGIC (FIXED)
+            let visibleCount = 0;
+            items.forEach(item => { if(item.style.display !== 'none') visibleCount++; });
+
+            const grid = document.getElementById('searchProductGrid');
+            
+            // Hapus pesan kosong lama jika ada
+            const oldEmpty = document.getElementById('emptyStateMsg');
+            if(oldEmpty) oldEmpty.remove();
+
+            if(visibleCount === 0) {
+                // Sembunyikan grid sementara
+                grid.style.display = 'none';
+
+                let emptyHTML = `
+                <div id="emptyStateMsg" class="empty-state-fancy">
+                    <div class="empty-illustration">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM10 17l-4-4h8l-4 4zm-1-13h2v6H9V4z" opacity="0.3"/></svg>
+                    </div>
+                    <div class="empty-title">Yah, Produk Tidak Ditemukan</div>
+                    <div class="empty-desc">Coba kurangi filter atau cari dengan kata kunci lain ya, Moms.</div>
+                    <button class="btn-empty-reset" onclick="resetAllFilters()">Reset Filter</button>
+                </div>`;
+                
+                // Masukkan pesan SETELAH grid (bukan overwrite, agar produk tidak hilang)
+                grid.insertAdjacentHTML('afterend', emptyHTML);
+            } else {
+                // Pastikan grid muncul kembali jika ada produk
+                grid.style.display = 'grid';
+            }
+        }
+
+        function checkRangeOverlap(filterStr, productStr) {
+            let filterRange = parseRange(filterStr);
+            let productRange = parseRange(productStr);
+            if(!filterRange || !productRange) return false;
+            return (filterRange.min <= productRange.max && filterRange.max >= productRange.min);
+        }
+
+        function parseRange(str) {
+            if(!str) return null;
+            let nums = str.match(/(\d+)/g);
+            if(!nums) return null;
+            if(nums.length === 1) {
+                return { min: parseInt(nums[0]), max: parseInt(nums[0]) };
+            }
+            return { min: parseInt(nums[0]), max: parseInt(nums[nums.length-1]) };
+        }
+
+        function searchProduct() { applyFilters(); }
+        function resetAllFilters() {
+            activeFilters = { cat: 'all', mp: 'all', age: 'all', size: 'all', weight: 'all', sort: 'new' };
+            ['cat', 'age', 'size', 'weight', 'sort'].forEach(type => {
+                let labelSpan = document.getElementById(`label-${type}`);
+                let btn = document.querySelector(`#dd-${type} .dd-btn`);
+                if(type === 'cat') labelSpan.innerText = 'Kategori';
+                if(type === 'age') labelSpan.innerText = 'Umur';
+                if(type === 'size') labelSpan.innerText = 'Size';
+                if(type === 'weight') labelSpan.innerText = 'Berat';
+                if(type === 'sort') labelSpan.innerText = 'Urutkan';
+                btn.classList.remove('active');
+                document.querySelectorAll(`#menu-${type} .dd-item`).forEach(i => i.classList.remove('selected'));
+                document.querySelector(`#menu-${type} .dd-item:first-child`).classList.add('selected');
+            });
+            updateFilter('mp', 'all');
+        }
+
+        const modal = document.getElementById("imageModal");
+        
+        function openProductModal(index) {
+            let item = allProducts[index]; 
+            let rawImages = item['Link Foto'] ? item['Link Foto'] : '';
+            currentImages = rawImages.split(',').map(url => url.trim()).filter(url => url.length > 0);
+            
+            if(currentImages.length === 0) return;
+            initSwiperModal(currentImages);
+            
+            // PERBAIKAN 1: TAMBAH no-scroll
+            document.body.classList.add('no-scroll');
+            modal.style.display = "flex";
+        }
+
+        function openSizeModal(imageLink) {
+            initSwiperModal([imageLink]); 
+            // PERBAIKAN 1: TAMBAH no-scroll
+            document.body.classList.add('no-scroll');
+            modal.style.display = "flex";
+        }
+
+        function initSwiperModal(images) {
+            const wrapper = document.getElementById('swiperWrapper');
+            wrapper.innerHTML = ''; // Reset slides
+            
+            // PERBAIKAN 3: TAMBAH onerror UNTUK FALLBACK GAMBAR
+            images.forEach(img => {
+                let slide = `
+                <div class="swiper-slide">
+                    <div class="swiper-zoom-container">
+                        <img src="${img}" onerror="this.src='https://placehold.co/300?text=No+Image'">
+                    </div>
+                </div>`;
+                wrapper.insertAdjacentHTML('beforeend', slide);
+            });
+
+            // Initialize or Update Swiper
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+            }
+            
+            swiperInstance = new Swiper(".mySwiper", {
+                zoom: true, // Enable Pinch Zoom
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            });
+        }
+
+        function closeModal() { 
+            // PERBAIKAN 1: HAPUS no-scroll
+            document.body.classList.remove('no-scroll');
+            modal.style.display = "none"; 
+        }
+        window.onclick = function(e) { if(e.target == modal) closeModal(); }
+
+        var backBtn = document.getElementById("backBtn");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) backBtn.classList.add("show");
+            else backBtn.classList.remove("show");
+        };
+
+        const fakeNames = ["Bunda Rina", "Mama Azka", "Kak Dinda", "Bunda Siska", "Moms Fika"];
+        const fakeItems = ["Paket Hemat 3pcs", "Boxer Spiderman", "Singlet Sekolah", "CD Anak Karakter"];
+        setInterval(() => {
+            const notif = document.getElementById('liveNotif');
+            const img = document.getElementById('notifImg');
+            const txt = document.getElementById('notifText');
+            let randName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+            let randItem = fakeItems[Math.floor(Math.random() * fakeItems.length)];
+            img.src = `https://ui-avatars.com/api/?name=${randName}&background=ffcc80&color=333`;
+            txt.innerHTML = `<b>${randName}</b> baru saja membeli<br>${randItem}`;
+            notif.classList.add('show');
+            setTimeout(() => { notif.classList.remove('show'); }, 4000);
+        }, 15000);
+
+        setInterval(function() {
+            let d = new Date();
+            let h = 23 - d.getHours(); let m = 59 - d.getMinutes(); let s = 59 - d.getSeconds();
+            document.getElementById("timer").innerHTML = (h<10?'0'+h:h)+":"+(m<10?'0'+m:m)+":"+(s<10?'0'+s:s);
+        }, 1000);
+
+        // --- UPDATED: BLOG LOGIC ---
+        function filterBlogCat(cat, btn) {
+            currentBlogCat = cat;
+            
+            // Update UI tombol active
+            document.querySelectorAll('.blog-tag').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            filterBlog();
+        }
+
+        function filterBlog() {
+            const searchVal = document.getElementById('blogSearchInput').value.toLowerCase();
+            const container = document.getElementById('blogListContainer');
+            
+            let filtered = blogPosts.filter(p => {
+                // Filter by Search Text
+                let matchText = p.title.toLowerCase().includes(searchVal) || p.snippet.toLowerCase().includes(searchVal);
+                // Filter by Category
+                let matchCat = currentBlogCat === 'all' ? true : p.cat === currentBlogCat;
+                
+                return matchText && matchCat;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#999; font-size:12px;">Artikel tidak ditemukan</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(post => `
+                <div class="blog-card" onclick="openArticle(${post.id})">
+                    <img src="${post.img}" class="blog-thumb">
+                    <div class="blog-info">
+                        <div class="blog-cat-badge">${post.cat}</div>
+                        <div class="blog-title-card">${post.title}</div>
+                        <div class="blog-snippet">${post.snippet}</div>
+                        <div class="blog-date">${post.date}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openArticle(id) {
+            const article = blogPosts.find(p => p.id === id);
+            if(!article) return;
+
+            const modal = document.getElementById('articleModal');
+            const content = document.getElementById('articleContent');
+            
+            content.innerHTML = `
+                <img src="${article.img}" class="art-img">
+                <h1 class="art-title">${article.title}</h1>
+                <div class="art-meta">
+                    <span style="background:var(--shopee); color:white; padding:2px 8px; border-radius:4px; font-weight:bold;">${article.cat}</span> • ${article.date}
+                </div>
+                <div class="art-body">${article.content}</div>
+                <div style="margin-top:30px; text-align:center;">
+                    <button onclick="closeArticle()" style="background:#eee; border:none; padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer;">Tutup Artikel</button>
+                </div>
+            `;
+            
+            // PERBAIKAN 1: TAMBAH no-scroll
+            document.body.classList.add('no-scroll');
+            modal.style.display = 'block';
+        }
+
+        function closeArticle() {
+            // PERBAIKAN 1: HAPUS no-scroll
+            document.body.classList.remove('no-scroll');
+            document.getElementById('articleModal').style.display = 'none';
+        }
+
+        init();
+    </script>
+</body>
+</html>
