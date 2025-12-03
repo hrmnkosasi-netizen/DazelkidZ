@@ -379,7 +379,153 @@
         .art-body { font-size: 14px; line-height: 1.8; color: #444; }
         .art-body p { margin-bottom: 15px; }
         .art-body h3 { color: var(--primary); margin-top: 25px; margin-bottom: 10px; font-size: 16px; }
+    
+    /* =========================================
+       RESPONSIVE DESKTOP (PC/LAPTOP)
+       ========================================= */
+    @media screen and (min-width: 769px) {
+        
+        /* 1. Container Melebar & Body Rapi */
+        .container {
+            max-width: 1200px; /* Lebar standar website PC */
+            box-shadow: none;
+            min-height: auto;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+        body {
+            background-image: none; /* Hilangkan dot pattern di PC biar bersih */
+            background-color: #f9f9f9;
+            padding-top: 70px; /* Ruang untuk Navigasi Atas */
+        }
 
+        /* 2. Navigasi Pindah ke Atas (Header Style) */
+        .bottom-nav {
+            top: 0;
+            bottom: auto; /* Hapus posisi bawah */
+            height: 70px;
+            border-top: none;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 40px;
+            justify-content: flex-end; /* Menu geser ke kanan */
+            gap: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item {
+            flex: initial; /* Matikan flex grow */
+            flex-direction: row; /* Ikon dan teks sejajar */
+            gap: 8px;
+            font-size: 14px;
+        }
+        /* Tambahkan Logo di Pojok Kiri Navigasi via CSS */
+        .bottom-nav::before {
+            content: "DAZEL KIDZ";
+            position: absolute;
+            left: 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* 3. Header Asli (Logo Tengah) Disederhanakan */
+        .header {
+            padding: 40px 0 20px;
+            flex-direction: row;
+            gap: 20px;
+        }
+        .logo-image { width: 100px; }
+        .brand-name { font-size: 36px; }
+        
+        /* 4. Banner Lebih Lebar & Pendek */
+        .banner-container {
+            width: calc(100% - 40px);
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            height: 350px; /* Banner lebih tinggi di PC */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* 5. Grid Produk (4-5 Kolom) */
+        .product-grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Otomatis isi kolom */
+            gap: 25px;
+            padding: 0 20px;
+        }
+        .product-card {
+            border: 1px solid #e5e5e5;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        /* 6. Perbaikan Search Bar & Filter */
+        .sticky-nav-wrapper {
+            top: 70px; /* Supaya tidak tertutup Navigasi Atas */
+            z-index: 900;
+            padding-bottom: 20px;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .dropdown-scroll-container {
+            justify-content: center;
+            flex-wrap: wrap; /* Tombol filter turun ke bawah jika penuh */
+            overflow: visible;
+        }
+        
+        /* 7. Modal & Dropdown Menu jadi Popup Tengah */
+        .dd-menu {
+            bottom: auto !important;
+            top: 50% !important;
+            left: 50% !important;
+            width: 400px;
+            border-radius: 20px;
+            max-height: 70vh;
+            /* Trik override animasi slide-up JS */
+            transform: translate(-50%, -50%) !important; 
+            transition: opacity 0.3s !important;
+        }
+        .dd-menu.show {
+            opacity: 1;
+        }
+        
+        /* Modal Fullscreen (Artikel, Compare) dikecilkan di tengah */
+        .modal-content, .article-content {
+            max-width: 800px;
+            margin: 40px auto;
+            border-radius: 20px;
+            height: auto;
+            max-height: 90vh;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .article-modal, .compare-modal {
+            background: rgba(0,0,0,0.5); /* Background gelap transparan */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .article-header, .compare-header {
+            border-radius: 20px 20px 0 0;
+        }
+        
+        /* 8. Blog Grid */
+        .blog-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .blog-card { margin: 0; }
+        
+        /* Sembunyikan elemen mobile only */
+        .announcement-bar { display: none; } /* Opsional: hilangkan marquee di PC */
+        .back-to-top { right: 40px; bottom: 40px; width: 50px; height: 50px; }
+        .live-notif { left: 40px; bottom: 40px; }
+        .compare-float { bottom: 40px; }
+    }
     </style>
 </head>
 <body>
